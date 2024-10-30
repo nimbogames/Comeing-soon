@@ -21,6 +21,7 @@
             align-items: center;
             text-align: center;
             background-color: #1a1a1a;
+            overflow: hidden;
         }
 
         /* Dark overlay */
@@ -34,6 +35,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1;
         }
 
         /* Coming Soon content */
@@ -57,6 +59,14 @@
             font-size: 2rem;
             font-weight: bold;
         }
+
+        .web-link {
+            display: none;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            color: #00fffb;
+        }
+        
         button {
             padding: 10px 20px;
             font-size: 18px;
@@ -79,6 +89,25 @@
             font-size: 1rem;
             color: #bbb;
         }
+
+        /* Confetti decorations */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            animation: fall 2s linear infinite;
+            z-index: 3;
+        }
+        
+        @keyframes fall {
+            from {
+                transform: translateY(-100vh);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
     </style>
 </head>
 <body>
@@ -89,15 +118,23 @@
             <div class="countdown" id="countdown">Launching in: 00 Days 00 Hours 00 Minutes 00 Seconds</div>
             <h3>on 11/9 at 9 am and 11 minutes web will launch</h3>
             <button><a href="contact us2.html">contact us </a></button>
+            <div class="web-link" id="webLink">
+                <a href="https://nimbogames.github.io/Comeing-soon/" target="_blank">Visit Our Website</a>
+            </div>
         </div>
     </div>
     
-    <footer>© 2024 Game Studio - All rights reserved</footer>
+    <footer>© 2024 Nimbo Gamy World - All rights reserved</footer>
+
+
 
     <!-- Countdown Script -->
     <script>
         // Set the launch date
-        const launchDate = new Date("November 09, 2024 09:11:00").getTime();
+        const launchDate = new Date("october 30, 2024 23:00:00").getTime();
+        const countdownElement = document.getElementById("countdown");
+        const webLink = document.getElementById("webLink");
+        const launchMusic = document.getElementById("launchMusic");
 
         const countdownFunction = setInterval(function() {
             const now = new Date().getTime();
@@ -110,17 +147,42 @@
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
             // Display the countdown
-            document.getElementById("countdown").innerHTML = 
+            countdownElement.innerHTML = 
                 `Launching in: ${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds`;
 
             // If the countdown is finished, display text
             if (timeLeft < 0) {
                 clearInterval(countdownFunction);
-                document.getElementById("countdown").innerHTML = "The game has launched!";
+                countdownElement.innerHTML = "The game has launched!";
+                
+                // Play launch music
+                launchMusic.play();
+
+                // Show web link
+                webLink.style.display = "block";
+
+                // Start confetti effect
+                startConfetti();
             }
         }, 1000);
-    </script>
 
-    
+        // Function to generate confetti effect
+        function startConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+
+        // Helper function for random colors
+        function getRandomColor() {
+            const colors = ['#FFC107', '#FF5722', '#4CAF50', '#2196F3', '#E91E63'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
 </body>
 </html>
